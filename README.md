@@ -48,11 +48,17 @@ Open [http://localhost:3000](http://localhost:3000). Local dev does not run the 
 
 ### 4. Deploy to Vercel
 
+1. Import the GitHub repo at [vercel.com/new](https://vercel.com/new)
+2. **Framework Preset:** Next.js (auto-detected)
+3. **Output Directory:** leave **empty** — do not set `public` (Next.js uses `.next`, not a static `public` build output)
+4. Add all env vars from `.env.example`
+5. Deploy
+
+If you see *"No Output Directory named public found"*, go to **Project Settings → Build & Development Settings** and clear the **Output Directory** field, then redeploy.
+
 ```bash
 npx vercel
 ```
-
-Add all env vars in the Vercel dashboard. The `vercel.json` cron runs **once per day** at **13:00 UTC** (8:00 AM Central / Texas time during daylight saving).
 
 ## API endpoints
 
