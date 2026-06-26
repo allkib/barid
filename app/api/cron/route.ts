@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateDailyMessage } from "@/lib/ai";
-import { isDeliveryDue } from "@/lib/delivery-time";
+import { isDeliveryTimeReached } from "@/lib/delivery-time";
 import { getSettings, markSent } from "@/lib/settings";
 import { sendSms } from "@/lib/sms";
 
@@ -42,8 +42,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ skipped: true, reason: "No phone number" });
     }
 
-    if (!isDeliveryDue(settings.deliveryTime, settings.timezone)) {
-      return NextResponse.json({ skipped: true, reason: "Not delivery time" });
+    if (!isDeliveryTimeReached(settings.deliveryTime, settings.timezone)) {
+      return NextResponse.json({ skipped: true, reason: "Before delivery time" });
     }
 
     if (alreadySentToday(settings.lastSentAt, settings.timezone)) {

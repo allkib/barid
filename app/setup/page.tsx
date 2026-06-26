@@ -133,7 +133,7 @@ export default function SetupPage() {
       setTimezone(data.timezone);
       setStatus({
         type: "success",
-        text: `You're subscribed! Your daily letter will arrive at ${deliveryTime} your local time.`,
+        text: `You're subscribed! Your daily letter is sent each morning on or after ${deliveryTime} your local time.`,
       });
     } catch (err) {
       setStatus({
@@ -318,15 +318,15 @@ export default function SetupPage() {
                 <p>
                   {subscribed ? (
                     <>
-                      You&apos;re subscribed. Barid sends one letter each day at{" "}
+                      You&apos;re subscribed. Barid sends one letter each morning on or after{" "}
                       <strong>{settings?.deliveryTime ?? deliveryTime}</strong> your local
                       time — no other sites or setup required.
                     </>
                   ) : (
                     <>
                       Tap <strong>Seal &amp; Save</strong> to subscribe. Your letter is sent
-                      automatically each day at <strong>{deliveryTime}</strong> your local
-                      time — no cron jobs or third-party accounts to configure.
+                      each morning on or after <strong>{deliveryTime}</strong> your local
+                      time — no extra accounts to configure.
                     </>
                   )}
                 </p>

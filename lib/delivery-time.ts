@@ -34,18 +34,17 @@ export function parseDeliveryTime(deliveryTime: string): {
 }
 
 /**
- * True when local time is within [delivery, delivery + windowMinutes).
- * Pair with a cron that runs at least every `windowMinutes`.
+ * True when local time is on or after the user's chosen delivery time.
+ * Used with Vercel Hobby cron (once per day at 14:30 UTC).
  */
-export function isDeliveryDue(
+export function isDeliveryTimeReached(
   deliveryTime: string,
   timezone: string,
-  now = new Date(),
-  windowMinutes = 5
+  now = new Date()
 ): boolean {
   const target = parseDeliveryTime(deliveryTime);
   const current = getLocalTimeParts(now, timezone);
   const targetMins = target.hour * 60 + target.minute;
   const currentMins = current.hour * 60 + current.minute;
-  return currentMins >= targetMins && currentMins < targetMins + windowMinutes;
+  return currentMins >= targetMins;
 }
