@@ -4,7 +4,7 @@ import { getIslamicCalendarContext } from "./islamic-calendar";
 import { formatHeadlinesForPrompt, fetchHeadlines } from "./news";
 
 const DUKE_BASE_URL = "https://litellm.oit.duke.edu/v1";
-const DEFAULT_MODEL = "gpt-4o-mini";
+const DEFAULT_MODEL = "gpt-5-mini";
 
 /** GSM-7 single SMS segment — keeps Twilio cost to 1 message per day */
 const SMS_MAX_CHARS = 160;
