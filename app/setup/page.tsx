@@ -236,7 +236,8 @@ export default function SetupPage() {
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
                 <p className="field-hint">
-                  Include country code — where your daily letter arrives
+                  Include country code — your personal cell, where letters arrive (not your
+                  Twilio sender number)
                 </p>
 
                 <p className="delivery-window-note">

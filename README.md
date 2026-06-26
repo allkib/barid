@@ -32,7 +32,7 @@ npm install
 Copy `.env.example` to `.env.local` and fill in:
 
 - **DUKE_AI_API_KEY** — Get from [Duke AI Dashboard](https://dashboard.ai.duke.edu/api-keys)
-- **TWILIO_*** — From [Twilio Console](https://console.twilio.com)
+- **TWILIO_*** — From [Twilio Console](https://console.twilio.com). `TWILIO_PHONE_NUMBER` must be a **Twilio-purchased sender number**, not your personal cell.
 - **CRON_SECRET** — Any random string (e.g. `openssl rand -hex 32`). Vercel sends this automatically to cron invocations.
 - **UPSTASH_REDIS_*** — From [Upstash](https://upstash.com) (free tier)
 
