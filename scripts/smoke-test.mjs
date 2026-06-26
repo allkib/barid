@@ -68,13 +68,37 @@ await check("GET /api/cron rejects missing auth", async () => {
   if (res.status !== 401) throw new Error(`expected 401, got ${res.status}`);
 });
 
+await check("GET /api/settings by phone", async () => {
+  const res = await fetch(`${BASE}/api/settings?phone=${encodeURIComponent("+18048036690")}`);
+  if (!res.ok) throw new Error(`status ${res.status}`);
+  const data = await res.json();
+  if (data.phoneNumber !== "+18048036690") throw new Error("phone not loaded");
+});
+
+await check("POST second subscriber", async () => {
+  const res = await fetch(`${BASE}/api/settings`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      phoneNumber: "+15551234567",
+      interests: ["news"],
+    }),
+  });
+  if (!res.ok) throw new Error(`status ${res.status}`);
+});
+
 await check("GET /api/cron accepts secret", async () => {
   const secret = process.env.CRON_SECRET;
   if (!secret) throw new Error("CRON_SECRET not set");
   const res = await fetch(`${BASE}/api/cron?secret=${encodeURIComponent(secret)}`);
   if (res.status === 401) throw new Error("unauthorized");
   const data = await res.json();
-  if (!("skipped" in data) && !("success" in data) && !("error" in data)) {
+  if (
+    !("skipped" in data) &&
+    !("success" in data) &&
+    !("error" in data) &&
+    !("sent" in data)
+  ) {
     throw new Error("unexpected response");
   }
 });

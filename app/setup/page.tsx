@@ -11,6 +11,8 @@ import {
 } from "@/lib/types";
 import { DELIVERY_WINDOW_LABEL } from "@/lib/delivery-time";
 
+const PHONE_STORAGE_KEY = "barid_phone";
+
 const STEPS = [
   { id: 1, label: "Delivery" },
   { id: 2, label: "Contents" },
@@ -54,13 +56,20 @@ export default function SetupPage() {
   const [testing, setTesting] = useState(false);
   const [status, setStatus] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
-  const loadSettings = useCallback(async () => {
+  const loadSettings = useCallback(async (phone?: string) => {
     try {
-      const res = await fetch("/api/settings");
+      const savedPhone = phone ?? localStorage.getItem(PHONE_STORAGE_KEY) ?? "";
+      const url = savedPhone
+        ? `/api/settings?phone=${encodeURIComponent(savedPhone)}`
+        : "/api/settings";
+      const res = await fetch(url);
       const data: UserSettings = await res.json();
-      setSettings(data);
-      setPhoneNumber(data.phoneNumber);
-      setInterests(data.interests);
+      if (!res.ok) throw new Error("Failed to load settings");
+      setSettings(data.phoneNumber ? data : null);
+      if (data.phoneNumber) {
+        setPhoneNumber(data.phoneNumber);
+        setInterests(data.interests);
+      }
     } catch {
       setStatus({ type: "error", text: "Failed to load settings" });
     } finally {
@@ -124,6 +133,7 @@ export default function SetupPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Save failed");
       setSettings(data);
+      localStorage.setItem(PHONE_STORAGE_KEY, data.phoneNumber);
       setStatus({
         type: "success",
         text: `You're subscribed! Your daily letter arrives each morning (${DELIVERY_WINDOW_LABEL}).`,
@@ -142,7 +152,11 @@ export default function SetupPage() {
     setTesting(true);
     setStatus(null);
     try {
-      const res = await fetch("/api/test", { method: "POST" });
+      const res = await fetch("/api/test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phoneNumber }),
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Test failed");
       setStatus({
@@ -159,7 +173,10 @@ export default function SetupPage() {
     }
   }
 
-  const subscribed = Boolean(settings?.phoneNumber && settings.phoneNumber === phoneNumber);
+  const subscribed = Boolean(
+    settings?.phoneNumber &&
+      settings.phoneNumber.replace(/\D/g, "") === phoneNumber.replace(/\D/g, "")
+  );
 
   const heroPhase = heroOpen ? "open" : "closed";
   const slideClass = slideDir === "forward" ? "step-panel--enter-forward" : "step-panel--enter-back";

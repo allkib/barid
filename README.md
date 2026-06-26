@@ -36,7 +36,7 @@ Copy `.env.example` to `.env.local` and fill in:
 - **CRON_SECRET** — Any random string (e.g. `openssl rand -hex 32`). Vercel sends this automatically to cron invocations.
 - **UPSTASH_REDIS_*** — From [Upstash](https://upstash.com) (free tier)
 
-For a single-user setup without Redis, you can use `PHONE_NUMBER`, `INTERESTS`, `DELIVERY_TIME`, and `TIMEZONE` env vars instead.
+Multi-user settings are stored per phone number in Upstash (`barid:subscriber:+1…`). The daily cron sends to all subscribers.
 
 ### 3. Run locally
 
