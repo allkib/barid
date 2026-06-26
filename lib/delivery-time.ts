@@ -1,7 +1,10 @@
-/** Fixed daily delivery window — all users, Texas (Central) time. */
+/** Fixed daily delivery — all users, 8 AM Texas (Central) time. */
 export const DELIVERY_TIMEZONE = "America/Chicago";
 
-export const DELIVERY_WINDOW_LABEL = "8–9 AM Texas time";
+export const DELIVERY_WINDOW_LABEL = "8 AM Texas time";
+
+/** Cron runs at 13:00 UTC = 8:00 AM CDT (most of the year). */
+export const DELIVERY_CRON_UTC = "0 13 * * *";
 
 /** Local hour/minute in the given IANA timezone. */
 export function getLocalTimeParts(
@@ -20,11 +23,10 @@ export function getLocalTimeParts(
   return { hour, minute };
 }
 
-/** True during 8:00–9:00 AM Central (Texas) time, inclusive. */
+/** True at 8:00 AM Central (Texas) when the daily cron fires. */
 export function isTexasMorningDeliveryWindow(now = new Date()): boolean {
   const { hour, minute } = getLocalTimeParts(now, DELIVERY_TIMEZONE);
-  const totalMins = hour * 60 + minute;
-  return totalMins >= 8 * 60 && totalMins <= 9 * 60;
+  return hour === 8 && minute < 15;
 }
 
 export function isSameCalendarDayInTimezone(

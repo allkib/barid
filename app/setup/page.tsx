@@ -223,8 +223,8 @@ export default function SetupPage() {
                 </p>
 
                 <p className="delivery-window-note">
-                  <strong>When it arrives:</strong> every morning between{" "}
-                  {DELIVERY_WINDOW_LABEL} (Central).
+                  <strong>When it arrives:</strong> every morning at {DELIVERY_WINDOW_LABEL}{" "}
+                  (Central).
                 </p>
               </Card>
             </div>
@@ -307,14 +307,14 @@ export default function SetupPage() {
                 <p>
                   {subscribed ? (
                     <>
-                      You&apos;re subscribed. Barid sends one letter each morning between{" "}
-                      <strong>{DELIVERY_WINDOW_LABEL}</strong> — no other sites or setup
-                      required.
+                      You&apos;re subscribed. Barid sends one letter at{" "}
+                      <strong>{DELIVERY_WINDOW_LABEL}</strong> each morning — no other sites
+                      or setup required.
                     </>
                   ) : (
                     <>
                       Tap <strong>Seal &amp; Save</strong> to subscribe. Your letter is sent
-                      each morning between <strong>{DELIVERY_WINDOW_LABEL}</strong> — no extra
+                      at <strong>{DELIVERY_WINDOW_LABEL}</strong> each morning — no extra
                       accounts to configure.
                     </>
                   )}

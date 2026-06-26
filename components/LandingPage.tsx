@@ -33,7 +33,7 @@ const STEPS = [
   {
     num: "01",
     title: "Set your address",
-    text: "Enter your phone number — your letter arrives each morning between 8–9 AM Texas time.",
+    text: "Enter your phone number — your letter arrives at 8 AM Texas time each morning.",
   },
   {
     num: "02",
@@ -43,7 +43,7 @@ const STEPS = [
   {
     num: "03",
     title: "Receive your post",
-    text: "Every morning between 8–9 AM Texas time, one thoughtful text arrives in your inbox.",
+    text: "Every morning at 8 AM Texas time, one thoughtful text arrives in your inbox.",
   },
 ];
 
@@ -130,16 +130,15 @@ export function LandingPage() {
                 <p className="landing-body">
                   In a world of endless notifications, Barid brings back something older and
                   calmer: <strong>one letter a day</strong>. No app to open, no algorithm to
-                  fight — just a single text waiting for you each morning between 8 and 9 AM
-                  Texas time.
+                  fight — just a single text waiting for you at 8 AM Texas time each morning.
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={200}>
                 <p className="landing-body">
                   The name <span className="landing-arabic-inline">بريد</span> (Barid) means
                   mail or post in Arabic. Each message is composed overnight from live news
-                  headlines and the Islamic calendar, then sealed and sent to your phone each
-                  morning between 8 and 9 AM Texas time.
+                  headlines and the Islamic calendar, then sealed and sent to your phone at
+                  8 AM Texas time each morning.
                 </p>
               </ScrollReveal>
             </div>
