@@ -1,0 +1,30 @@
+{
+  "name": "barid",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "bash scripts/dev.sh",
+    "dev:clean": "bash scripts/dev.sh --clean",
+    "clean": "rm -rf .next node_modules/.cache",
+    "build": "next build",
+    "postbuild": "echo '\\n⚠️  Run npm run dev (not while dev is running). Dev auto-cleans .next after build.'",
+    "start": "next start",
+    "lint": "next lint",
+    "test:smoke": "node scripts/smoke-test.mjs"
+  },
+  "dependencies": {
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.34.3",
+    "next": "^15.1.0",
+    "openai": "^4.77.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "twilio": "^5.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "typescript": "^5.7.2"
+  }
+}
