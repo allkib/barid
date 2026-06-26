@@ -58,8 +58,6 @@ await check("POST /api/settings", async () => {
     body: JSON.stringify({
       phoneNumber: "+18048036690",
       interests: ["news", "islamic"],
-      deliveryTime: "08:40",
-      timezone: "America/New_York",
     }),
   });
   if (!res.ok) throw new Error(`status ${res.status}`);
@@ -90,8 +88,6 @@ await check("rate limit blocks excessive settings writes", async () => {
       body: JSON.stringify({
         phoneNumber: "+18048036690",
         interests: ["news"],
-        deliveryTime: "08:40",
-        timezone: "America/New_York",
       }),
     });
     if (res.status === 429) {

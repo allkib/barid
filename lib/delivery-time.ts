@@ -1,3 +1,8 @@
+/** Fixed daily delivery window — all users, Texas (Central) time. */
+export const DELIVERY_TIMEZONE = "America/Chicago";
+
+export const DELIVERY_WINDOW_LABEL = "8–9 AM Texas time";
+
 /** Local hour/minute in the given IANA timezone. */
 export function getLocalTimeParts(
   date: Date,
@@ -15,36 +20,23 @@ export function getLocalTimeParts(
   return { hour, minute };
 }
 
-export function parseDeliveryTime(deliveryTime: string): {
-  hour: number;
-  minute: number;
-} {
-  const [hour, minute] = deliveryTime.split(":").map(Number);
-  if (
-    Number.isNaN(hour) ||
-    Number.isNaN(minute) ||
-    hour < 0 ||
-    hour > 23 ||
-    minute < 0 ||
-    minute > 59
-  ) {
-    throw new Error(`Invalid delivery time: ${deliveryTime}`);
-  }
-  return { hour, minute };
+/** True during 8:00–9:00 AM Central (Texas) time, inclusive. */
+export function isTexasMorningDeliveryWindow(now = new Date()): boolean {
+  const { hour, minute } = getLocalTimeParts(now, DELIVERY_TIMEZONE);
+  const totalMins = hour * 60 + minute;
+  return totalMins >= 8 * 60 && totalMins <= 9 * 60;
 }
 
-/**
- * True when local time is on or after the user's chosen delivery time.
- * Used with Vercel Hobby cron (once per day at 14:30 UTC).
- */
-export function isDeliveryTimeReached(
-  deliveryTime: string,
-  timezone: string,
-  now = new Date()
+export function isSameCalendarDayInTimezone(
+  a: Date,
+  b: Date,
+  timezone: string
 ): boolean {
-  const target = parseDeliveryTime(deliveryTime);
-  const current = getLocalTimeParts(now, timezone);
-  const targetMins = target.hour * 60 + target.minute;
-  const currentMins = current.hour * 60 + current.minute;
-  return currentMins >= targetMins;
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: timezone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  return formatter.format(a) === formatter.format(b);
 }

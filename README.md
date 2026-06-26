@@ -4,8 +4,8 @@ A free web app that sends you a personalized daily text about news and Islamic u
 
 ## How it works
 
-1. **Setup** — Enter your phone, topics, and preferred delivery time, then **Seal & Save**
-2. **Automatic scheduling** — Vercel Cron runs once daily (Hobby plan) and sends after your chosen local time
+1. **Setup** — Enter your phone and topics, then **Seal & Save**
+2. **Automatic scheduling** — Vercel Cron runs once daily; letters send between **8–9 AM Texas time**
 3. **News fetching** — Pulls headlines from RSS feeds (BBC, Reuters, Al Jazeera, etc.)
 4. **AI personalization** — Duke AI Gateway writes a warm, concise daily digest
 5. **SMS delivery** — Twilio sends the message to your phone
@@ -52,9 +52,7 @@ Open [http://localhost:3000](http://localhost:3000). Local dev does not run the 
 npx vercel
 ```
 
-Add all env vars in the Vercel dashboard. The `vercel.json` cron job runs **once per day** at 14:30 UTC (~9:30 AM US Eastern) — compatible with Vercel Hobby. Users do not need to configure anything else after **Seal & Save**.
-
-> **Note:** On Vercel Pro you can switch the cron to `*/5 * * * *` for delivery within 5 minutes of the chosen time.
+Add all env vars in the Vercel dashboard. The `vercel.json` cron runs **once per day** at 14:00 UTC (8:00 AM CST / 9:00 AM CDT) and delivers during the **8–9 AM Texas** window.
 
 ## API endpoints
 

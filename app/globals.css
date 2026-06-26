@@ -1012,6 +1012,22 @@ button:disabled {
   margin-top: 0.5rem;
 }
 
+.delivery-window-note {
+  margin-top: 1.25rem;
+  padding: 0.85rem 1rem;
+  background: var(--paper);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.delivery-window-note strong {
+  color: var(--ink);
+  font-family: var(--font-display);
+}
+
 .last-sent {
   margin-top: 1rem;
   text-align: center;

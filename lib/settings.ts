@@ -24,8 +24,8 @@ function settingsFromEnv(): UserSettings | null {
   return {
     phoneNumber: phone,
     interests: interests.length > 0 ? interests : ["news", "islamic"],
-    deliveryTime: process.env.DELIVERY_TIME ?? "07:00",
-    timezone: process.env.TIMEZONE ?? "America/New_York",
+    deliveryTime: process.env.DELIVERY_TIME ?? "08:00",
+    timezone: process.env.TIMEZONE ?? "America/Chicago",
   };
 }
 

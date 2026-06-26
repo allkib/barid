@@ -9,7 +9,7 @@ import {
   type InterestId,
   type UserSettings,
 } from "@/lib/types";
-import { getBrowserTimezone, resolveTimezone } from "@/lib/timezone";
+import { DELIVERY_WINDOW_LABEL } from "@/lib/delivery-time";
 
 const STEPS = [
   { id: 1, label: "Delivery" },
@@ -44,8 +44,6 @@ export default function SetupPage() {
   const [settings, setSettings] = useState<UserSettings | null>(null);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [interests, setInterests] = useState<InterestId[]>(["news", "islamic"]);
-  const [deliveryTime, setDeliveryTime] = useState("07:00");
-  const [timezone, setTimezone] = useState(getBrowserTimezone);
   const [step, setStep] = useState(1);
   const [slideDir, setSlideDir] = useState<"forward" | "back">("forward");
   const [loading, setLoading] = useState(true);
@@ -63,8 +61,6 @@ export default function SetupPage() {
       setSettings(data);
       setPhoneNumber(data.phoneNumber);
       setInterests(data.interests);
-      setDeliveryTime(data.deliveryTime);
-      setTimezone(resolveTimezone(data));
     } catch {
       setStatus({ type: "error", text: "Failed to load settings" });
     } finally {
@@ -123,17 +119,14 @@ export default function SetupPage() {
         body: JSON.stringify({
           phoneNumber,
           interests,
-          deliveryTime,
-          timezone: getBrowserTimezone(),
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Save failed");
       setSettings(data);
-      setTimezone(data.timezone);
       setStatus({
         type: "success",
-        text: `You're subscribed! Your daily letter is sent each morning on or after ${deliveryTime} your local time.`,
+        text: `You're subscribed! Your daily letter arrives each morning (${DELIVERY_WINDOW_LABEL}).`,
       });
     } catch (err) {
       setStatus({
@@ -229,14 +222,10 @@ export default function SetupPage() {
                   Include country code — where your daily letter arrives
                 </p>
 
-                <label htmlFor="time">Delivery time</label>
-                <input
-                  id="time"
-                  type="time"
-                  value={deliveryTime}
-                  onChange={(e) => setDeliveryTime(e.target.value)}
-                />
-                <p className="field-hint">Your local time — we detect your timezone automatically</p>
+                <p className="delivery-window-note">
+                  <strong>When it arrives:</strong> every morning between{" "}
+                  {DELIVERY_WINDOW_LABEL} (Central).
+                </p>
               </Card>
             </div>
           )}
@@ -277,7 +266,7 @@ export default function SetupPage() {
                   </div>
                   <div className="review-row">
                     <dt>Delivery</dt>
-                    <dd>{deliveryTime} (your local time)</dd>
+                    <dd>{DELIVERY_WINDOW_LABEL}</dd>
                   </div>
                   <div className="review-row">
                     <dt>Topics</dt>
@@ -318,15 +307,15 @@ export default function SetupPage() {
                 <p>
                   {subscribed ? (
                     <>
-                      You&apos;re subscribed. Barid sends one letter each morning on or after{" "}
-                      <strong>{settings?.deliveryTime ?? deliveryTime}</strong> your local
-                      time — no other sites or setup required.
+                      You&apos;re subscribed. Barid sends one letter each morning between{" "}
+                      <strong>{DELIVERY_WINDOW_LABEL}</strong> — no other sites or setup
+                      required.
                     </>
                   ) : (
                     <>
                       Tap <strong>Seal &amp; Save</strong> to subscribe. Your letter is sent
-                      each morning on or after <strong>{deliveryTime}</strong> your local
-                      time — no extra accounts to configure.
+                      each morning between <strong>{DELIVERY_WINDOW_LABEL}</strong> — no extra
+                      accounts to configure.
                     </>
                   )}
                 </p>

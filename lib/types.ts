@@ -26,8 +26,8 @@ export interface UserSettings {
 export const DEFAULT_SETTINGS: UserSettings = {
   phoneNumber: "",
   interests: ["news", "islamic"],
-  deliveryTime: "07:00",
-  timezone: "America/New_York",
+  deliveryTime: "08:00",
+  timezone: "America/Chicago",
 };
 
 /** GSM-7 single SMS segment limit */

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { DELIVERY_TIMEZONE } from "@/lib/delivery-time";
 import { enforceRateLimit } from "@/lib/rate-limit";
 import { getSettings, saveSettings } from "@/lib/settings";
 import type { InterestId } from "@/lib/types";
@@ -24,8 +25,8 @@ export async function POST(request: Request) {
     const settings = await saveSettings({
       phoneNumber: body.phoneNumber,
       interests,
-      deliveryTime: body.deliveryTime,
-      timezone: body.timezone,
+      deliveryTime: "08:00",
+      timezone: DELIVERY_TIMEZONE,
     });
 
     return NextResponse.json(settings);
