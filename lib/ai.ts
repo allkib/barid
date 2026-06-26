@@ -4,7 +4,8 @@ import { getIslamicCalendarContext } from "./islamic-calendar";
 import { formatHeadlinesForPrompt, fetchHeadlines } from "./news";
 
 const DUKE_BASE_URL = "https://litellm.oit.duke.edu/v1";
-const DEFAULT_MODEL = "gpt-5-mini";
+/** Reasoning models (gpt-5-mini/nano) can burn the token budget with no visible output. */
+const DEFAULT_MODEL = "GPT 4.1 Mini";
 
 /** GSM-7 single SMS segment — keeps Twilio cost to 1 message per day */
 const SMS_MAX_CHARS = 160;
@@ -90,7 +91,8 @@ export async function generateDailyMessage(
 - Short greeting + weave requested topics in 2–3 tight sentences max.
 - No markdown, bullets, or line breaks.
 - Name one news source if covering news.
-- Never fabricate facts.`,
+- Never fabricate facts.
+- Output only the SMS text, nothing else.`,
       },
       {
         role: "user",
@@ -99,9 +101,13 @@ export async function generateDailyMessage(
     ],
   });
 
-  const text = response.choices[0]?.message?.content?.trim();
+  const choice = response.choices[0];
+  const text = choice?.message?.content?.trim();
   if (!text) {
-    throw new Error("AI returned empty message");
+    const reasoning = response.usage?.completion_tokens_details?.reasoning_tokens;
+    throw new Error(
+      `AI returned empty message (model=${model}, finish=${choice?.finish_reason ?? "unknown"}${reasoning ? `, reasoning_tokens=${reasoning}` : ""})`
+    );
   }
 
   return enforceSingleSms(text.replace(/\s+/g, " "));
